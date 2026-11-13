@@ -1,0 +1,31 @@
+#controls{
+  position:fixed;top:0;left:0;right:0;z-index:5;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:calc(10px + env(safe-area-inset-top)) 14px 8px;
+  background:linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.5));
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(244,158,192,.35);
+  border-radius:0 0 18px 18px;
+}
+.brand{font-weight:700;letter-spacing:1px;color:#d0558b;white-space:nowrap}
+.seg{display:inline-flex;background:#ffe3ee;border-radius:999px;padding:4px;gap:2px}
+#mode{margin-right:10px}   /* 玩法/难度两组之间留白，别连成一串 5 个控件 */
+.seg-btn{padding:6px 14px;border-radius:999px;font-size:14px;color:#8e4a6d;transition:background .15s,color .15s}
+.seg-btn.is-active{background:linear-gradient(135deg,#ff9ec4,#ef8ab5);color:#fff;font-weight:600;
+  box-shadow:0 2px 8px rgba(214,120,170,.35)}
+.actions{display:flex;gap:8px;margin-left:auto}
+.action-btn{
+  padding:7px 12px;border-radius:12px;background:#fff;
+  border:1px solid #f9c6da;color:#c0559a;font-size:14px;
+  box-shadow:0 2px 6px rgba(214,120,170,.15);
+  transition:transform .1s;
+}
+.action-btn:active{transform:scale(.95)}
+.action-btn:disabled{opacity:.4;box-shadow:none;transform:none}
+.action-btn.primary{background:linear-gradient(135deg,#ff9ec4,#f49ec0);color:#fff;border-color:#f49ec0}
+@media (max-width:640px){
+  .actions{margin-left:0}
+  .brand{font-size:15px}
+}
+/* 窄屏换行时把“模式”分段提到难度分段前面，选中态不会看不到 */
+@media (max-width:520px){.brand{order:-2}#mode{order:-1}}

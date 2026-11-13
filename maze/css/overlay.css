@@ -1,0 +1,22 @@
+.overlay{
+  position:fixed;inset:0;z-index:20;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,240,246,.6);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+}
+.overlay.hidden{display:none}
+.overlay .card{
+  background:#fff;border:2px solid var(--card-edge);border-radius:24px;
+  box-shadow:var(--shadow);padding:34px 46px;text-align:center;
+  animation:pop .45s cubic-bezier(.34,1.56,.64,1);
+}
+.overlay .big{font-size:64px;filter:drop-shadow(0 6px 12px rgba(240,150,60,.35))}
+.overlay h1{font-size:26px;margin:10px 0 6px;color:#d0558b}
+.overlay p{font-size:14px;margin-bottom:18px}
+.overlay .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.confetti{
+  position:fixed;top:-40px;z-index:21;pointer-events:none;
+  animation-name:fall;animation-timing-function:linear;animation-fill-mode:forwards;
+}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.15}}

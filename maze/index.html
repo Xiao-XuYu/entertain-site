@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>小公主迷宫 · 公主的皇冠</title>
+<meta name="theme-color" content="#ffeef5">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/controls.css">
+<link rel="stylesheet" href="css/hud.css">
+<link rel="stylesheet" href="css/overlay.css">
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="maze-canvas"></canvas>
+  <canvas id="ink-canvas"></canvas>
+</div>
+
+<header id="controls">
+  <div class="brand">🎀 小公主迷宫</div>
+  <div class="seg" id="mode" role="radiogroup" aria-label="玩法模式">
+    <button class="seg-btn" data-mode="stroke" role="radio" aria-checked="false">✏️ 划线</button>
+    <button class="seg-btn" data-mode="hero" role="radio" aria-checked="false">👸 角色</button>
+  </div>
+  <div class="seg" id="difficulty" role="radiogroup" aria-label="迷宫复杂程度">
+    <button class="seg-btn" data-diff="easy" role="radio" aria-checked="false">简单</button>
+    <button class="seg-btn is-active" data-diff="medium" role="radio" aria-checked="true">中等</button>
+    <button class="seg-btn" data-diff="hard" role="radio" aria-checked="false">困难</button>
+  </div>
+  <div class="actions">
+    <button id="btn-undo" class="action-btn" type="button" disabled>↩️ 撤销</button>
+    <button id="btn-redo" class="action-btn" type="button" disabled>↪️ 重做</button>
+    <button id="btn-clear" class="action-btn" type="button">🧽 重画</button>
+    <button id="btn-new" class="action-btn primary" type="button">🍭 新迷宫</button>
+  </div>
+  <div id="hud">
+    <span id="hud-time">⏱ 00:00</span>
+    <span id="hud-msg">从 🏰 画一条线到 👑</span>
+  </div>
+</header>
+
+<div id="overlay" class="overlay hidden" role="dialog" aria-modal="true">
+  <div class="card">
+    <div class="big">👑</div>
+    <h1>皇冠找到啦！</h1>
+    <p id="win-info"></p>
+    <div class="row">
+      <button id="btn-again" class="action-btn primary" type="button">🍭 再玩一次</button>
+      <button id="btn-close" class="action-btn" type="button">👀 看看迷宫</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

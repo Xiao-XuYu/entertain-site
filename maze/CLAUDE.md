@@ -1,0 +1,1 @@
+# 当前项目可能有其他claude code session也在运行

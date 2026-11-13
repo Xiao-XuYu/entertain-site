@@ -1,0 +1,23 @@
+:root{
+  --bg-1:#fff0f6; --bg-2:#f3e8ff;
+  --card:#ffffff; --card-edge:#ffdcea;
+  --pink:#f49ec0; --pink-deep:#e58bb0; --ink:#c0559a; --lavender:#8f6bd8;
+  --text:#7a4b68;
+  --shadow:0 10px 30px rgba(214,120,170,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 800px at 15% -10%, #ffe3ee 0%, transparent 60%),
+    radial-gradient(1000px 700px at 110% 20%, #e6d9ff 0%, transparent 55%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-2));
+  overflow:hidden;
+  overscroll-behavior:none;
+  touch-action:none;
+  -webkit-user-select:none;user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}

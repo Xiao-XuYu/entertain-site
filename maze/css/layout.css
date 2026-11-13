@@ -1,0 +1,4 @@
+#stage{position:fixed;inset:0}
+#stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+#maze-canvas{pointer-events:none}
+#ink-canvas{pointer-events:auto;cursor:crosshair}
