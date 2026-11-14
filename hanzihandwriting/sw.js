@@ -3,7 +3,6 @@ const CACHE = "hanzi-handwriting-v1";
 const ASSETS = [
   "./",
   "./index.html",
-  "./sheet.html",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png"

@@ -1,0 +1,58 @@
+/* ---- 选字表 ---- */
+.sets { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .8rem; }
+.sets button { border: 2px solid var(--ink); background: #fff; border-radius: 999px; padding: .25rem .7rem; font-weight: 800; font-size: .85rem; }
+.sets button.on { background: #f2c46b; }
+
+.custom { display: flex; gap: .4rem; margin-bottom: .8rem; }
+.custom input { flex: 1; min-width: 0; border: 2px solid var(--ink); border-radius: 10px; padding: .4rem .6rem; font: 700 1.1rem 'Noto Sans SC', sans-serif; }
+.custom button { border: 2px solid var(--ink); background: var(--jade); color: #fff; border-radius: 10px; padding: 0 .8rem; font-weight: 900; }
+
+.chars { display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem; }
+.chars button { position: relative; aspect-ratio: 1; border: 2px solid #d8c39a; background: #fff; border-radius: 10px; font-family: 'Ma Shan Zheng', 'KaiTi', serif; font-size: 1.6rem; }
+.chars button.on { border-color: var(--ink); background: #fff1c2; box-shadow: 0 3px 0 var(--ink); }
+.chars button i { position: absolute; right: 2px; bottom: 0; font-style: normal; font-size: .55rem; color: var(--gold); letter-spacing: -1px; }
+
+.total { margin-top: .8rem; padding: .6rem; border-radius: 12px; background: #f6efdc; font-weight: 800; text-align: center; }
+
+/* ---- 台子顶部信息 ---- */
+.meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.meta .py { font-size: 1.6rem; font-weight: 900; color: #8a5a2e; }
+.meta .info { font-weight: 800; color: #6b5d50; }
+
+.seg { display: inline-flex; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; }
+.seg button { border: 0; background: #fff; padding: .25rem .8rem; font-weight: 800; font-size: .85rem; }
+.seg button + button { border-left: 2px solid var(--ink); }
+.seg button.on { background: #f2c46b; }
+
+/* ---- 书写板 ---- */
+.board { position: relative; width: min(440px, 80vw); aspect-ratio: 1; background: #fffdf6; border: 4px solid var(--red); border-radius: 6px; touch-action: none; }
+.board svg.grid { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#writer { position: absolute; inset: 0; }
+
+.seal { position: absolute; right: -18px; top: -18px; width: 86px; height: 86px; border-radius: 10px; background: var(--red); color: #fbe9dd; font-family: 'Ma Shan Zheng', serif;
+  font-size: 2rem; line-height: 1; display: grid; place-items: center; transform: rotate(-12deg); box-shadow: inset 0 0 0 4px #fbe9dd, inset 0 0 0 6px var(--red); animation: stamp .45s cubic-bezier(.2,1.6,.5,1) both; z-index: 3; }
+@keyframes stamp { from { transform: rotate(-30deg) scale(2.6); opacity: 0; } }
+
+.hint { min-height: 1.5em; font-weight: 800; font-size: 1.05rem; }
+.hint.good { color: var(--jade); }
+.hint.bad { color: var(--red); }
+
+.strokes { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+.strokes span { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ink); background: #fff; }
+.strokes span.ok { background: var(--jade); }
+.strokes span.miss { background: #f2c46b; }
+
+.stars { font-size: 2.4rem; color: var(--gold); letter-spacing: .3rem; min-height: 1.2em; }
+.stars .off { color: #e3d9c2; }
+
+/* ---- 按钮 ---- */
+.btns { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; }
+.btn { border: 3px solid var(--ink); border-radius: 12px; padding: .5rem 1rem; font-weight: 900; background: #fff; box-shadow: 0 3px 0 var(--ink); }
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.btn.red { background: var(--red); color: #fff; }
+.btn.jade { background: var(--jade); color: #fff; }
+.btn.gold { background: #f2c46b; }
+
+/* ---- 撒花 ---- */
+.petal { position: fixed; z-index: 30; width: 12px; height: 9px; border-radius: 60% 0 60% 0; pointer-events: none; animation: fall linear forwards; }
+@keyframes fall { to { transform: translate(var(--dx), 110vh) rotate(720deg); } }
