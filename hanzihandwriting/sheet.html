@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="color-scheme" content="light">
   <title>打印练字纸 · 汉字书写练习｜文心书院</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#2b2420">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-icon-180.png">
   <link rel="canonical" href="https://visionchinese.com/learningresources/gamestools/hanzihandwriting/sheet.html">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
@@ -745,6 +749,9 @@
       el.clearAllBtn.addEventListener("click", clearAllInk);
       updateInputCount();
     })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
   </script>
 </body>
 </html>

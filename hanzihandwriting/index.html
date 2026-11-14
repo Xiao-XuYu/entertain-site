@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>描红小书法家 Handwriting Practice · 汉字书写练习</title>
 <meta name="description" content="描红小书法家：在田字格里一笔一画跟着写汉字，写错当场提示，写完播放笔顺并评星。内置小一到小六常用字，也能输入自己的字；还可以打印练字纸。">
+<meta name="theme-color" content="#2b2420">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-icon-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root { --ink: #2b2420; --paper: #fbf6e6; --red: #b83a2b; --jade: #2f7a5a; --gold: #c99a3c; }
@@ -173,6 +177,9 @@
 
   renderSets(); loadList([...SETS[setName]]);
 })();
+</script>
+<script>
+  if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
 </script>
 </body>
 </html>

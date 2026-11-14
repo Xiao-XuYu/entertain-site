@@ -1,0 +1,26 @@
+{
+  "name": "描红小书法家 · 汉字书写练习",
+  "short_name": "描红小书法家",
+  "description": "在田字格里一笔一画跟着写汉字，写错当场提示，写完播放笔顺并评星。",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#efe5ca",
+  "theme_color": "#2b2420",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
