@@ -1,0 +1,32 @@
+{
+  "name": "小公主迷宫 · 公主的皇冠",
+  "short_name": "公主迷宫",
+  "description": "粉紫色调的全屏随机 2D 迷宫小游戏。划线划出通往皇冠的路，或把公主拖向终点。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffeef5",
+  "theme_color": "#ffeef5",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

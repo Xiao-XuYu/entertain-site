@@ -13,6 +13,8 @@ python -m http.server 8000
 
 然后浏览器访问 `http://localhost:8000`。直接双击打开 `index.html` 在 Chrome 下会被 file:// 的模块安全策略拦截。
 
+> 支持 **PWA**：首次在线访问后自动缓存全部静态资源（service worker），之后离线也能玩；Chrome/Edge 地址栏会出现「安装」入口，可像 App 一样全屏启动。改代码后需把 [sw.js](sw.js) 顶部 `VERSION` 升号以触发重新缓存。
+
 ## 玩法
 
 - 顶部先选 **✏️ 划线 / 👸 角色**；上次选的模式存在浏览器本地（localStorage，键 `maze.mode`），刷新/重开自动沿用，第一次默认「划线」。切换模式不会重生成迷宫，两边的进度各自保留，只清掉胜负状态并重设计时
