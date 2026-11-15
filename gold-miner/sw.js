@@ -1,6 +1,9 @@
 /* Service Worker: 离线缓存所有静态资源 */
-var CACHE = 'gold-miner-v1';
-var ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
+var CACHE = 'gold-miner-v2';
+var ASSETS = ['./', './index.html', './styles.css', './manifest.json', './icon-192.png', './icon-512.png',
+  './js/config.js', './js/state.js', './js/audio.js',
+  './js/render/draw.js', './js/render/items.js',
+  './js/update.js', './js/input.js', './js/main.js'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(

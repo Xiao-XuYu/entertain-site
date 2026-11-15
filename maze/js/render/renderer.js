@@ -38,10 +38,10 @@ export class Renderer {
   }
 
   // 角色模式：同一张 ink 画布上画足迹 + 英雄（画像按当前主题分发）
-  drawHero(trail, hero, geo, r, time, flags) {
+  drawHero(trail, hero, geo, r, time, flags, drawTrail = true) {
     const t = getTheme();
     this.ictx.clearRect(0, 0, this.cssW, this.cssH);
-    t.trail(this.ictx, trail, geo, r);
+    if (drawTrail) t.trail(this.ictx, trail, geo, r);
     const p = toPx(hero.gx, hero.gy, geo);
     t.painter(this.ictx, p.x, p.y, r, time, flags);
   }

@@ -1,13 +1,21 @@
-// 设置弹框：顶栏「设置」按钮打开，内含主题选项（当前主题高亮）
+// 设置弹框：顶栏「设置」按钮打开，内含主题选项（当前主题高亮）+ 角色模式轨迹开关
 import { THEMES, readThemeKey } from '../themes.js';
+import { readShowTrail } from '../config.js';
 
-export function initSettings({ onTheme }) {
+export function initSettings({ onTheme, onTrailToggle }) {
   const gears = document.querySelectorAll('[data-settings]');
   const overlay = document.getElementById('settings-overlay');
   const grid = document.getElementById('theme-list');
+  const trailEnabled = document.getElementById('trail-enabled');
   if (!overlay || !grid) return;
 
   let current = readThemeKey();
+  if (trailEnabled) {
+    trailEnabled.checked = readShowTrail();
+    trailEnabled.addEventListener('change', () => {
+      if (onTrailToggle) onTrailToggle(trailEnabled.checked);
+    });
+  }
 
   // 由 THEMES 注册表动态生成主题选项按钮
   grid.innerHTML = '';

@@ -23,7 +23,9 @@
 
 /* 设置弹框 · 主题选项 */
 #settings-overlay .card{max-width:360px;padding:28px 30px}
-#settings-overlay .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 20px}
+#settings-overlay .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 10px}
+#settings-overlay .trail-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 20px;width:100%;font-size:15px;color:#666;cursor:pointer}
+#settings-overlay .trail-toggle input{width:20px;height:20px;accent-color:#8e44ad;cursor:pointer}
 #settings-overlay .theme-opt{
   display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px;
   border:2px solid var(--card-edge);border-radius:16px;background:#fff;cursor:pointer;

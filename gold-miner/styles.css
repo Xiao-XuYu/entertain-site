@@ -1,0 +1,56 @@
+* {
+  margin: 0; padding: 0;
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: 100%;
+}
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  background: #6BB6FF;
+  touch-action: manipulation;
+  font-family: sans-serif;
+  position: fixed;
+  inset: 0;
+}
+#wrap {
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: 100%;
+}
+#game {
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: 100%;
+  display: block;
+  background: #6BB6FF;
+}
+#hud {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 10px 14px;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify; justify-content: space-between;
+  -webkit-box-align: center; align-items: center;
+  font-size: 22px; font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000;
+  pointer-events: none; z-index: 10;
+}
+#msg {
+  position: absolute; inset: 0;
+  display: none;
+  -webkit-box-align: center; align-items: center;
+  -webkit-box-pack: center; justify-content: center;
+  -webkit-box-orient: vertical; flex-direction: column;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  z-index: 20; padding: 20px; text-align: center;
+  pointer-events: none;
+}
+#msg h1 { font-size: 40px; margin-bottom: 16px; }
+#msg p  { font-size: 24px; margin: 8px 0; }
+#hint {
+  position: absolute; left: 0; right: 0; bottom: 16px;
+  text-align: center; color: #fff; font-size: 18px;
+  text-shadow: 2px 2px 0 #000;
+  pointer-events: none; z-index: 10;
+}

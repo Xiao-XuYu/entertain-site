@@ -1,6 +1,6 @@
 import {
   SIZES, PAD_PX, MODE,
-  readSize, saveSize, readDifficulty, saveDifficulty, readMode, saveMode,
+  readSize, saveSize, readDifficulty, saveDifficulty, readMode, saveMode, readShowTrail, saveShowTrail,
 } from './config.js';
 import { generateMaze } from './maze/generator.js';
 import { wallSegments } from './maze/walls.js';
@@ -25,6 +25,7 @@ export function startApp() {
   const renderer = new Renderer(
     document.getElementById('maze-canvas'), inkCanvas);
   const hud = createHud();
+  let showTrail = readShowTrail();
 
   let sizeKey = readSize();              // 迷宫数量（网格尺寸，本地记忆）
   let levelKey = readDifficulty();       // 真正难度（通路复杂度，本地记忆）
@@ -64,7 +65,7 @@ export function startApp() {
       moving: dragging || !!hero.tween,
       blocked: wallSince > 0,
       dx: hero.dir.x,
-    });
+    }, showTrail);
   }
 
   function renderInk() {
@@ -272,7 +273,14 @@ export function startApp() {
   setUndoRedo = controls.setUndoRedo;
   setModeUi = controls.setMode;
 
-  initSettings({ onTheme });
+  initSettings({
+    onTheme,
+    onTrailToggle: (val) => {
+      showTrail = val;
+      saveShowTrail(val);
+      renderInk();
+    },
+  });
 
   bindWinButtons({ onAgain: () => { hideWin(); newMaze(); }, onClose: hideWin });
 

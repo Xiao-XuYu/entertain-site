@@ -55,3 +55,16 @@ export function saveMode(mode) {
   try { localStorage.setItem(MODE_STORAGE_KEY, mode); }
   catch { /* 无痕模式/配额受限，记住失败不影响玩 */ }
 }
+
+// 角色模式下是否画移动轨迹（足迹）：默认开启
+export const TRAIL_STORAGE_KEY = 'maze.heroTrail';
+export function readShowTrail() {
+  try {
+    const v = localStorage.getItem(TRAIL_STORAGE_KEY);
+    return v === null ? true : v === '1';
+  } catch { return true; }
+}
+export function saveShowTrail(val) {
+  try { localStorage.setItem(TRAIL_STORAGE_KEY, val ? '1' : '0'); }
+  catch { /* 无痕模式/配额受限，记住失败不影响玩 */ }
+}
