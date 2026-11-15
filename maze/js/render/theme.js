@@ -1,15 +1,16 @@
-export const THEME = {
-  card: '#ffffff',
-  cardEdge: '#ffdcea',
-  dot: '#ffe7f1',
-  wallBase: '#fbd3e4',
-  wall: '#ea8fbf',
-  startBg: '#ffe0ee',
-  endBg: '#fff0cd',
-  ring: '#f7a8c4',
-  ink: '#c0559a',
-  inkGlow: 'rgba(192,85,154,.28)',
-  inkBroken: '#ff5c8f',
-  decor: '#ffc0d9',
-  emojiFont: '"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif',
-};
+import { THEMES, findTheme, readThemeKey, saveThemeKey } from '../themes.js';
+
+let theme = findTheme(readThemeKey());
+export const THEME = { ...theme.colors };
+
+export function getTheme() {
+  return theme;
+}
+
+// 切换主题：就地更新 THEME（保持现看引用），并记忆到本地
+export function applyTheme(key) {
+  theme = findTheme(key);
+  Object.assign(THEME, theme.colors);
+  saveThemeKey(theme.key);
+  return theme;
+}

@@ -2,7 +2,7 @@ import { drawMaze } from './drawMaze.js';
 import { drawDecor } from './drawDecor.js';
 import { drawStroke } from './drawPath.js';
 import { toPx } from '../geometry/geometry.js';
-import { drawPrincess, drawHeroTrail } from '../hero/princess.js';
+import { getTheme } from './theme.js';
 
 export class Renderer {
   constructor(mazeCanvas, inkCanvas) {
@@ -37,11 +37,12 @@ export class Renderer {
     if (activeStroke) drawStroke(this.ictx, activeStroke, geo);
   }
 
-  // 角色模式：同一张 ink 画布上画足迹 + 小公主
+  // 角色模式：同一张 ink 画布上画足迹 + 英雄（画像按当前主题分发）
   drawHero(trail, hero, geo, r, time, flags) {
+    const t = getTheme();
     this.ictx.clearRect(0, 0, this.cssW, this.cssH);
-    drawHeroTrail(this.ictx, trail, geo, r);
+    t.trail(this.ictx, trail, geo, r);
     const p = toPx(hero.gx, hero.gy, geo);
-    drawPrincess(this.ictx, p.x, p.y, r, time, flags);
+    t.painter(this.ictx, p.x, p.y, r, time, flags);
   }
 }

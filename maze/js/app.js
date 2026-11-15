@@ -1,6 +1,6 @@
 import {
-  DIFFICULTIES, PAD_PX, START_EMOJI, END_EMOJI, MODE,
-  readDifficulty, saveDifficulty, readMode, saveMode,
+  SIZES, PAD_PX, MODE,
+  readSize, saveSize, readDifficulty, saveDifficulty, readMode, saveMode,
 } from './config.js';
 import { generateMaze } from './maze/generator.js';
 import { wallSegments } from './maze/walls.js';
@@ -10,6 +10,9 @@ import { createStroke, addStrokePoint } from './input/stroke.js';
 import { hasWinningRoute } from './input/route.js';
 import { attachPointer } from './input/pointer.js';
 import { initControls } from './ui/controls.js';
+import { initSettings } from './ui/settings.js';
+import { getTheme, applyTheme } from './render/theme.js';
+import { sfx } from './audio.js';
 import { createHud } from './ui/hud.js';
 import { showWin, hideWin, bindWinButtons } from './ui/win.js';
 import {
@@ -23,7 +26,8 @@ export function startApp() {
     document.getElementById('maze-canvas'), inkCanvas);
   const hud = createHud();
 
-  let diffKey = readDifficulty();
+  let sizeKey = readSize();              // 迷宫数量（网格尺寸，本地记忆）
+  let levelKey = readDifficulty();       // 真正难度（通路复杂度，本地记忆）
   let mode = readMode();                 // 上次选的模式（本地记忆）
   let maze = null, walls = [], geo = null;
   let strokes = [], undone = [], active = null, won = false;
@@ -34,6 +38,26 @@ export function startApp() {
 
   // 供调试与自动化自测读取内部状态
   window.__maze = () => ({ maze, geo, strokes, undone, walls, mode, hero, won });
+
+  function theme() { return getTheme(); }
+
+  function refreshThemeUi() {
+    const t = theme();
+    document.title = t.title;
+    const brand = document.querySelector('.brand');
+    if (brand) brand.textContent = t.brand;
+    const body = document.body;
+    for (const k of Object.keys(t.css || {})) {
+      body.style.setProperty(k, t.css[k]);
+    }
+    modeMsg();
+  }
+
+  function onTheme(key) {
+    applyTheme(key);
+    refreshThemeUi();
+    layout(); // 重新读取主题配色重绘
+  }
 
   function renderHero(time) {
     renderer.drawHero(hero.trail, hero, geo, heroRadius(geo), time, {
@@ -60,16 +84,17 @@ export function startApp() {
   }
 
   function modeMsg() {
+    const t = theme();
     if (mode === MODE.HERO) {
-      hud.setMsg(`👸 按住小公主，把她在迷宫里拖到 ${END_EMOJI}（别穿墙，方向键也能走）`);
+      hud.setMsg(`${t.icon} 按住${t.heroName}，把她在迷宫里拖到 ${t.endEmoji}（别穿墙，方向键也能走）`);
     } else {
-      hud.setMsg(`想怎么画就怎么画，碰到墙也没关系～笔迹里有一条 ${START_EMOJI} → ${END_EMOJI} 不穿墙的连通路线就算赢！`);
+      hud.setMsg(`想怎么画就怎么画，碰到墙也没关系～笔迹里有一条 ${t.startEmoji} → ${t.endEmoji} 不穿墙的连通路线就算赢！`);
     }
   }
 
   function newMaze() {
-    const d = DIFFICULTIES[diffKey];
-    maze = generateMaze(d.cols, d.rows);
+    const s = SIZES[sizeKey];
+    maze = generateMaze(s.cols, s.rows, levelKey);
     walls = wallSegments(maze);
     strokes = []; undone = []; active = null; won = false;
     resetHero(hero);
@@ -82,11 +107,12 @@ export function startApp() {
   }
 
   function onClear() {
+    sfx.click();
     if (mode === MODE.HERO) {
       resetHero(hero);
       dragging = false; wallSince = 0;
       if (won) { won = false; hud.startTimer(); }
-      hud.setMsg(`公主回到 ${START_EMOJI} 城堡门口啦，再拖她走一遍～`);
+      hud.setMsg(`${theme().heroName}回到 ${theme().startEmoji} ${theme().startName}门口啦，再拖${theme().heroName}走一遍～`);
       renderHero(performance.now() / 1000);
       return;
     }
@@ -114,6 +140,7 @@ export function startApp() {
 
   function undo() {
     if (mode === MODE.HERO || won || !strokes.length) return;
+    sfx.click();
     undone.push(strokes.pop());
     hud.setMsg('↩️ 撤销了一段～');
     renderInk();
@@ -122,6 +149,7 @@ export function startApp() {
 
   function redo() {
     if (mode === MODE.HERO || won || !undone.length) return;
+    sfx.click();
     strokes.push(undone.pop());
     hud.setMsg('↪️ 重做回来啦～');
     renderInk();
@@ -131,12 +159,13 @@ export function startApp() {
   function win() {
     if (won) return;
     won = true;
+    sfx.win();
     dragging = false;
     hero.tween = null;
     hud.stopTimer();
-    hud.setMsg('🎉 皇冠找到啦！');
+    hud.setMsg(`🎉 ${theme().endName}找到啦！`);
     const how = mode === MODE.HERO
-      ? `公主走了约 ${Math.round(hero.steps)} 格，穿过 ${maze.cols}×${maze.rows} 的迷宫！`
+      ? `${theme().heroName}走了约 ${Math.round(hero.steps)} 格，穿过 ${maze.cols}×${maze.rows} 的迷宫！`
       : `走出了 ${maze.cols}×${maze.rows} 的迷宫！`;
     showWin(`用时 ${hud.elapsedText()}，${how}`);
   }
@@ -147,7 +176,7 @@ export function startApp() {
     const c = toPx(hero.gx, hero.gy, geo);
     const reach = heroRadius(geo) * 2.2;
     if (Math.hypot(p.x - c.x, p.y - c.y) > reach) {
-      hud.nudge('要按住小公主本人才能带着她走哦 👸');
+      hud.nudge(`要按住${theme().heroName}本人才能带着${theme().heroName}走哦 ${theme().icon}`);
       return;
     }
     dragging = true;
@@ -160,7 +189,7 @@ export function startApp() {
     const target = toGrid(p.x + grab.x, p.y + grab.y, geo);
     if (dragHero(hero, maze, geo, target, heroRadius(geo))) {
       const now = performance.now();
-      if (!wallSince) wallSince = now;
+      if (!wallSince) { wallSince = now; sfx.wall(); }
       else if (now - wallSince > 500 && now - wallNudged > 2500) {
         wallNudged = now;
         hud.nudge('这面墙过不去，绕一绕再走 🧱');
@@ -175,7 +204,7 @@ export function startApp() {
     if (!dragging) return;
     dragging = false;
     wallSince = 0;
-    if (!won) hud.setMsg(`松开手公主就停下；想挪就再按住她，朝右下角的 ${END_EMOJI} 走 →`);
+    if (!won) hud.setMsg(`松开手${theme().heroName}就停下；想挪就再按住${theme().heroName}，朝右下角的 ${theme().endEmoji} 走 →`);
   }
 
   attachPointer(inkCanvas, {
@@ -198,12 +227,13 @@ export function startApp() {
       const g = toGrid(p.x, p.y, geo);
       addStrokePoint(active, { x: g.x, y: g.y, w });
       if (active.points.length >= 2) {
+        sfx.place();
         undone = [];
         strokes.push(active);
         if (hasWinningRoute(strokes, walls, maze)) {
           win();
         } else {
-          hud.setMsg(`继续画～朝右下角的 ${END_EMOJI} 画出一条不穿墙的连通路线就好 ✨`);
+          hud.setMsg(`继续画～朝右下角的 ${theme().endEmoji} 画出一条不穿墙的连通路线就好 ✨`);
         }
       }
       active = null;
@@ -228,17 +258,21 @@ export function startApp() {
   }
 
   const controls = initControls({
-    difficulty: diffKey,
+    size: sizeKey,
+    level: levelKey,
     mode,
-    onDifficulty(key) { diffKey = key; saveDifficulty(key); newMaze(); },
-    onMode,
-    onNew: newMaze,
+    onSize(key) { sfx.click(); sizeKey = key; saveSize(key); newMaze(); },
+    onLevel(key) { sfx.click(); levelKey = key; saveDifficulty(key); newMaze(); },
+    onMode: (next) => { sfx.click(); onMode(next); },
+    onNew: () => { sfx.click(); newMaze(); },
     onClear,
     onUndo: undo,
     onRedo: redo,
   });
   setUndoRedo = controls.setUndoRedo;
   setModeUi = controls.setMode;
+
+  initSettings({ onTheme });
 
   bindWinButtons({ onAgain: () => { hideWin(); newMaze(); }, onClose: hideWin });
 
@@ -247,7 +281,10 @@ export function startApp() {
       const dir = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] }[e.key];
       if (dir) {
         e.preventDefault();
-        if (!won && !stepHero(hero, maze, dir[0], dir[1], performance.now())) {
+        if (won) return;
+        if (stepHero(hero, maze, dir[0], dir[1], performance.now())) {
+          sfx.step();
+        } else {
           hud.nudge('这面墙过不去，换个方向试试 🧱');
         }
         return;
@@ -262,6 +299,7 @@ export function startApp() {
   window.addEventListener('resize', layout);
   window.addEventListener('orientationchange', layout);
   setModeUi(mode);
+  refreshThemeUi();
   modeMsg();
   newMaze();
   restartLoop();

@@ -2,53 +2,43 @@ import { MODES, MODE } from '../config.js';
 
 const CLEAR_LABEL = { [MODE.STROKE]: '🧽 重画', [MODE.HERO]: '🧹 回起点' };
 
-export function initControls({
-  difficulty, mode, onDifficulty, onMode, onNew, onClear, onUndo, onRedo,
-}) {
-  const seg = document.getElementById('difficulty');
+function bindSeg(id, onSelect) {
+  const seg = document.getElementById(id);
   const buttons = [...seg.querySelectorAll('.seg-btn')];
 
-  function markActive(key) {
+  function mark(key) {
     for (const b of buttons) {
-      const on = b.dataset.diff === key;
+      const on = b.dataset.select === key;
       b.classList.toggle('is-active', on);
       b.setAttribute('aria-checked', on ? 'true' : 'false');
     }
   }
-
-  if (difficulty) markActive(difficulty);
 
   for (const btn of buttons) {
     btn.addEventListener('click', () => {
-      markActive(btn.dataset.diff);
-      onDifficulty(btn.dataset.diff);
+      mark(btn.dataset.select);
+      onSelect(btn.dataset.select);
     });
   }
 
-  // 模式分段（划线 / 角色）由本地记忆决定选中哪个
-  const modeSeg = document.getElementById('mode');
-  const modeBtns = [...modeSeg.querySelectorAll('.seg-btn')];
+  return { mark };
+}
+
+export function initControls({
+  size, level, mode, onSize, onLevel, onMode, onNew, onClear, onUndo, onRedo,
+}) {
+  const sizeCtl = bindSeg('size', onSize);
+  const levelCtl = bindSeg('level', onLevel);
+  if (size) sizeCtl.mark(size);
+  if (level) levelCtl.mark(level);
+
+  // 玩法模式（划线 / 角色）由本地记忆决定选中哪个
+  const modeCtl = bindSeg('mode', onMode);
   for (const m of MODES) {
-    const btn = modeBtns.find(b => b.dataset.mode === m.key);
+    const btn = document.querySelector(`#mode .seg-btn[data-select="${m.key}"]`);
     if (btn) btn.textContent = m.label;
   }
-
-  function markModeActive(key) {
-    for (const b of modeBtns) {
-      const on = b.dataset.mode === key;
-      b.classList.toggle('is-active', on);
-      b.setAttribute('aria-checked', on ? 'true' : 'false');
-    }
-  }
-
-  if (mode) markModeActive(mode);
-
-  for (const btn of modeBtns) {
-    btn.addEventListener('click', () => {
-      markModeActive(btn.dataset.mode);
-      onMode(btn.dataset.mode);
-    });
-  }
+  if (mode) modeCtl.mark(mode);
 
   const btnUndo = document.getElementById('btn-undo');
   const btnRedo = document.getElementById('btn-redo');
@@ -64,14 +54,15 @@ export function initControls({
       btnUndo.disabled = heroMode || !canUndo;
       btnRedo.disabled = heroMode || !canRedo;
     },
-    setDifficulty: markActive,
+    setSize: sizeCtl.mark,
+    setLevel: levelCtl.mark,
     // 角色模式里公主自己会走，撤销/重做笔迹没意义，重画变成“回起点”
     setMode(key) {
       heroMode = key === MODE.HERO;
       btnClear.textContent = CLEAR_LABEL[key] ?? CLEAR_LABEL[MODE.STROKE];
       btnUndo.title = heroMode ? '角色模式用不上撤销' : '撤销一段笔迹';
       btnRedo.title = heroMode ? '角色模式用不上重做' : '恢复一段笔迹';
-      markModeActive(key);
+      modeCtl.mark(key);
     },
   };
 }

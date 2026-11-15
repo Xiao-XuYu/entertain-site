@@ -1,5 +1,5 @@
 /* 小公主迷宫 Service Worker：静态资源离线缓存 */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'princess-maze-' + VERSION;
 
 const ASSETS = [
@@ -28,6 +28,7 @@ const ASSETS = [
   './js/maze/cell.js',
   './js/maze/generator.js',
   './js/maze/walls.js',
+  './js/themes.js',
   './js/render/drawDecor.js',
   './js/render/drawMaze.js',
   './js/render/drawPath.js',
@@ -35,7 +36,9 @@ const ASSETS = [
   './js/render/theme.js',
   './js/ui/controls.js',
   './js/ui/hud.js',
-  './js/ui/win.js'
+  './js/ui/settings.js',
+  './js/ui/win.js',
+  './js/hero/monkey.js'
 ];
 
 self.addEventListener('install', (event) => {

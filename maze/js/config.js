@@ -1,27 +1,37 @@
-export const DIFFICULTIES = {
-  easy:   { cols: 9,  rows: 7  },
+// 迷宫数量（网格尺寸）：很少≈旧·简单，一般≈旧·中等，很多≈旧·困难
+export const SIZES = {
+  fewest: { cols: 9,  rows: 7  },
+  few:    { cols: 11, rows: 9  },
   medium: { cols: 15, rows: 11 },
-  hard:   { cols: 21, rows: 15 },
+  many:   { cols: 17, rows: 13 },
+  most:   { cols: 21, rows: 15 },
 };
-export const DEFAULT_DIFFICULTY = 'medium';
-export const DIFFICULTY_STORAGE_KEY = 'maze.difficulty';
+export const DEFAULT_SIZE = 'medium';
+export const SIZE_STORAGE_KEY = 'maze.size';
 
-// 上次选的难度存在本地；读不到/值非法/存储不可用时回落到默认难度
-export function readDifficulty() {
+// 真正难度：不影响网格大小，只决定迷宫通路的复杂程度
+export const LEVELS = ['easy', 'medium', 'hard'];
+export const DEFAULT_LEVEL = 'medium';
+export const LEVEL_STORAGE_KEY = 'maze.level';
+
+function readKey(key, allowed, def) {
   try {
-    const v = localStorage.getItem(DIFFICULTY_STORAGE_KEY);
-    return Object.hasOwn(DIFFICULTIES, v) ? v : DEFAULT_DIFFICULTY;
-  } catch { return DEFAULT_DIFFICULTY; }
+    const v = localStorage.getItem(key);
+    return allowed.includes(v) ? v : def;
+  } catch { return def; }
 }
 
-export function saveDifficulty(key) {
-  if (!Object.hasOwn(DIFFICULTIES, key)) return;
-  try { localStorage.setItem(DIFFICULTY_STORAGE_KEY, key); }
+function saveKey(key, val, allowed) {
+  if (!allowed.includes(val)) return;
+  try { localStorage.setItem(key, val); }
   catch { /* 无痕模式/配额受限，记住失败不影响玩 */ }
 }
+
+export const readSize = () => readKey(SIZE_STORAGE_KEY, Object.keys(SIZES), DEFAULT_SIZE);
+export const saveSize = (k) => saveKey(SIZE_STORAGE_KEY, k, Object.keys(SIZES));
+export const readDifficulty = () => readKey(LEVEL_STORAGE_KEY, LEVELS, DEFAULT_LEVEL);
+export const saveDifficulty = (k) => saveKey(LEVEL_STORAGE_KEY, k, LEVELS);
 export const PAD_PX = 14;
-export const START_EMOJI = '🏰';
-export const END_EMOJI = '👑';
 
 // 玩法模式：划线（笔画路径）/ 角色（拖着小公主在迷宫里走）
 export const MODE = { STROKE: 'stroke', HERO: 'hero' };

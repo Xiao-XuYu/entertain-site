@@ -1,6 +1,5 @@
 import { WALLS } from '../maze/cell.js';
-import { THEME } from './theme.js';
-import { START_EMOJI, END_EMOJI } from '../config.js';
+import { THEME, getTheme } from './theme.js';
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -31,6 +30,7 @@ function drawEmoji(ctx, gx, gy, geo, emoji) {
 
 export function drawMaze(ctx, maze, geo) {
   const { cell, cellW, cellH, pad, ox, oy, w, h, cols, rows } = geo;
+  const { startEmoji, endEmoji } = getTheme();
 
   // 白色圆角卡片底；阴影半径要小于卡片到视口边缘的留白，否则会被裁出一道硬边
   ctx.save();
@@ -66,8 +66,8 @@ export function drawMaze(ctx, maze, geo) {
   ctx.arc(ox + 0.5 * cellW, oy + 0.5 * cellH, cell * 0.5, 0, Math.PI * 2);
   ctx.stroke();
   ctx.setLineDash([]);
-  drawEmoji(ctx, 0, 0, geo, START_EMOJI);
-  drawEmoji(ctx, cols - 1, rows - 1, geo, END_EMOJI);
+  drawEmoji(ctx, 0, 0, geo, startEmoji);
+  drawEmoji(ctx, cols - 1, rows - 1, geo, endEmoji);
 
   // 墙：宽浅色描边 + 细深色芯，圆润描边端点
   ctx.beginPath();
