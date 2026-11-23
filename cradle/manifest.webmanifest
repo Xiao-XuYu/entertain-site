@@ -1,0 +1,26 @@
+{
+  "name": "翻绳小花园 · 一根绳子的魔法",
+  "short_name": "翻绳小花园",
+  "description": "给小朋友的翻绳花样图鉴与分步教程，从面条、眼镜到蝴蝶、埃菲尔铁塔和双人接龙。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fff5f8",
+  "theme_color": "#fff5f8",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
