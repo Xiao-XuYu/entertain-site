@@ -17,13 +17,13 @@ const SAMP = 76;
 const K = N_STRAND_CTRL;
 const WORLD_SHAPES = FIGURES.map((_, i) => shapeWorld(i));
 
-/* 两只手的局部坐标系：手指朝上，掌心主要朝向镜头、略向中间，
+/* 两只手的局部坐标系：手指朝上，掌心相对（像真人两手撑绳那样），
    屏幕左侧的手拇指在局部 +x，右侧镜像；再各自向内倾一点，
    手指朝中间收，手臂像从画面外伸进来。 */
 const UP = new V(0, 1, 0);
 const PALM_N = {
-  L: new V(0.34, 0, 0.94).normalize(),
-  R: new V(-0.12, 0, 0.993).normalize(),
+  L: new V(0.72, 0, 0.69).normalize(),
+  R: new V(-0.72, 0, 0.69).normalize(),
 };
 const THUMB_X = {
   L: UP.clone().cross(PALM_N.L),
@@ -74,8 +74,10 @@ export function createCradleScene(canvas, hooks = {}) {
   const holdRoot = (side, player) => new V(
     SIDE_SIGN[side] * HX * 0.78, WRIST_Y, PLAYERS[player].z,
   );
+  /* 空闲的手放到画面外；接手时从两只手中间升上来，
+     不要从外面穿进原来那只手（会看到手叠手） */
   const restRoot = (side, player) => new V(
-    SIDE_SIGN[side] * 0.98, -1.95, PLAYERS[player].z + 0.02,
+    SIDE_SIGN[side] * 0.46, -3.30, PLAYERS[player].z + 0.02,
   );
   const _grip = new V();
   function grabRoot(side, player, targetIndex) {
@@ -89,9 +91,21 @@ export function createCradleScene(canvas, hooks = {}) {
   /* ---------------- 绳 ---------------- */
   const upTube = new RopeTube(SAMP, { radial: 10 });
   const loTube = new RopeTube(SAMP, { radial: 10 });
-  scene.add(upTube.mesh, loTube.mesh);
+  /* 上/下两根横绳：两只手同一高度出绳点之间的直绳。
+     真实翻绳在两手之间是四股：两根横绳 + 两股交叉的斜绳 */
+  const railT = new RopeTube(SAMP, { radial: 10 });
+  const railB = new RopeTube(SAMP, { radial: 10 });
+  const railCt = [new V(), new V(), new V()];
+  const railCb = [new V(), new V(), new V()];
+  const railCurveT = new THREE.CatmullRomCurve3(railCt, false, 'centripetal', 0.5);
+  const railCurveB = new THREE.CatmullRomCurve3(railCb, false, 'centripetal', 0.5);
+  const railSampleT = Array.from({ length: SAMP }, () => new V());
+  const railSampleB = Array.from({ length: SAMP }, () => new V());
+  scene.add(upTube.mesh, loTube.mesh, railT.mesh, railB.mesh);
 
-  const capGeo = new THREE.SphereGeometry(ROPE_R * 1.18, 10, 8);
+  /* 出绳点用一颗小绳结盖住：绳圈从手背上绕出来、接上花样那一瞬间的折角
+     全被这颗球吃掉，看起来就是绳在虎口打了个结 */
+  const capGeo = new THREE.SphereGeometry(ROPE_R * 1.14, 12, 10);
   const caps = [0, 1, 2, 3].map(() => {
     const m = new THREE.Mesh(capGeo, ropeMaterial());
     scene.add(m);
@@ -117,8 +131,8 @@ export function createCradleScene(canvas, hooks = {}) {
   let speed = 1;
 
   /* ---------------- 相机 ---------------- */
-  const CAM = { theta: 0.42, phi: 1.30, h: 1.30 };
-  const camTarget = new V(0, -0.73, 0);
+  const CAM = { theta: 0.24, phi: 1.30, h: 1.56 };
+  const camTarget = new V(0, -0.62, 0);
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.05, 80);
   let viewW = 640;
   let viewH = 480;
@@ -222,6 +236,15 @@ export function createCradleScene(canvas, hooks = {}) {
   const _ta = [new V(), new V(), new V(), new V()];
   const _td = [new V(), new V(), new V(), new V()];
 
+  /* 两点之间的横绳：中间点轻微下垂/上拱，并往镜头方向鼓一点，避免和斜绳贴在一起 */
+  function setRail(c, p0, p1, sag, bow) {
+    c[0].copy(p0);
+    c[2].copy(p1);
+    c[1].lerpVectors(p0, p1, 0.5);
+    c[1].y += sag;
+    c[1].z += bow;
+  }
+
   /* ANC 顺序：左0 右0 左1 右1；DIR 是该端点绳离开手环的方向 */
   function computeAnchors() {
     let holder = FIGURES[index].holder;
@@ -272,22 +295,31 @@ export function createCradleScene(canvas, hooks = {}) {
     /* 两端直接钉在虎口出绳点，中间只用花样内部的点：
        端点的切线由相邻控制点决定，绳离开手时是顺的，不会先翘再折 */
     upCtrl[0].copy(a[0]);
-    loCtrl[0].copy(a[3]);
+    loCtrl[0].copy(a[1]);
     for (let i = 1; i < K - 1; i++) {
       upCtrl[i].copy(upPts[i]);
       upCtrl[i].z += zPlane;
       loCtrl[i].copy(loPts[i]);
       loCtrl[i].z += zPlane;
     }
-    upCtrl[K - 1].copy(a[1]);
+    upCtrl[K - 1].copy(a[3]);
     loCtrl[K - 1].copy(a[2]);
+
+    /* 横绳：高处两个出绳点连成上横绳，低处两个出绳点连成下横绳 */
+    setRail(railCt, a[0], a[1], -0.006, 0.016);
+    setRail(railCb, a[2], a[3], 0.004, 0.016);
+
     for (let s = 0; s < SAMP; s++) {
       const t = s / (SAMP - 1);
       upCurve.getPoint(t, upSample[s]);
       loCurve.getPoint(t, loSample[s]);
+      railCurveT.getPoint(t, railSampleT[s]);
+      railCurveB.getPoint(t, railSampleB[s]);
     }
     upTube.update(upSample);
     loTube.update(loSample);
+    railT.update(railSampleT);
+    railB.update(railSampleB);
     caps[0].position.copy(a[0]);
     caps[1].position.copy(a[1]);
     caps[2].position.copy(a[2]);
@@ -425,9 +457,9 @@ export function createCradleScene(canvas, hooks = {}) {
     isAnimating: () => !!anim,
     getIndex: () => index,
     resetCamera() {
-      CAM.theta = 0.42;
+      CAM.theta = 0.24;
       CAM.phi = 1.30;
-      CAM.h = 1.30;
+      CAM.h = 1.56;
       applyCamera();
     },
     resize,

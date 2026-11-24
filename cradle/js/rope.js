@@ -1,7 +1,7 @@
 import * as THREE from './vendor/three.module.js';
 
 /* 绳的半径统一放这里：手环和两股绳必须一样粗才接得上 */
-export const ROPE_R = 0.0098;
+export const ROPE_R = 0.0206;
 
 let _mat = null;
 
