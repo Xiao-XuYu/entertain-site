@@ -1,399 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#fff5f8">
-<meta name="description" content="翻绳小花园：给小朋友的翻绳花样图鉴与分步教程，从面条、眼镜到蝴蝶、埃菲尔铁塔和双人接龙，平板和手机都能轻松翻。">
-<title>翻绳小花园 · 一根绳子的魔法</title>
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>翻绳接龙 · 两个人一根绳</title>
+  <meta name="description" content="两个小朋友轮流接绳的翻绳接龙，六个花样循环，可以一直翻下去。3D 演示每一步怎么接。" />
+  <meta name="theme-color" content="#f4f1ea" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<div class="bg-petals" aria-hidden="true">
-  <span class="petal p1"></span><span class="petal p2"></span><span class="petal p3"></span>
-  <span class="petal p4"></span><span class="petal p5"></span><span class="petal p6"></span>
-</div>
+  <header class="topbar">
+    <a class="brand" href="#/">翻绳接龙</a>
+    <span class="topbar-note">两个人 · 一根绳 · 一直翻下去</span>
+  </header>
 
-<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
-  <defs>
-    <linearGradient id="stringGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ff6f9c"/>
-      <stop offset=".5" stop-color="#b06fe0"/>
-      <stop offset="1" stop-color="#45c4b0"/>
-    </linearGradient>
-    <linearGradient id="stringGradWarm" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ffb36b"/>
-      <stop offset=".55" stop-color="#ff7fae"/>
-      <stop offset="1" stop-color="#b06fe0"/>
-    </linearGradient>
-    <filter id="stringShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#c4628e" flood-opacity=".35"/>
-    </filter>
-  </defs>
-</svg>
-
-<header class="site-header">
-  <div class="header-inner">
-    <a class="brand" href="#top" aria-label="回到顶部">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 44 44"><path d="M22 9c-6-6-16-2-15 7 1 7 9 12 15 18 6-6 14-11 15-18 1-9-9-13-15-7Z" fill="none" stroke="url(#stringGrad)" stroke-width="3.5" stroke-linecap="round"/></svg>
-      </span>
-      <span class="brand-text">翻绳小花园<small>String Garden</small></span>
-    </a>
-    <nav class="nav" aria-label="页面导航">
-      <a href="#learn">先学基础</a>
-      <a href="#gallery">花样图鉴</a>
-      <a href="#relay">双人接龙</a>
-      <a href="#facts">小知识</a>
-    </nav>
-    <div class="header-actions">
-      <button class="pill progress-pill" id="progressBtn" type="button" aria-haspopup="dialog">
-        <span aria-hidden="true">🌸</span><span id="progressText">已学会 0 / 18</span>
-      </button>
-      <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true" aria-label="开关音效">
-        <span aria-hidden="true" id="soundIcon">🔔</span>
-      </button>
-      <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-label="打开导航" aria-expanded="false" aria-controls="mobileNav">
-        <span aria-hidden="true">☰</span>
-      </button>
-    </div>
-  </div>
-  <nav class="mobile-nav" id="mobileNav" aria-label="移动导航" hidden>
-    <a href="#learn">先学基础</a><a href="#gallery">花样图鉴</a><a href="#relay">双人接龙</a><a href="#facts">小知识</a>
-  </nav>
-</header>
-
-<main id="top">
-  <!-- ───────────── HERO ───────────── -->
-  <section class="hero">
-    <div class="hero-copy">
-      <p class="eyebrow">适合 5–12 岁 · 平板更配哦</p>
-      <h1>一根绳子，<br>变出<span class="hl">一整个小花园</span></h1>
-      <p class="hero-lead">从一根会晃的“面条”开始，翻出眼镜、太阳、蝴蝶和小星星，还能和好朋友一起接力，越翻越厉害。</p>
-      <div class="hero-actions">
-        <a class="btn primary big" href="#learn">先学基础 <span aria-hidden="true">→</span></a>
-        <button class="btn ghost big" id="drawBtn" type="button">🎲 随机抽一个花样</button>
+  <main class="wrap">
+    <!-- 列表页 -->
+    <section id="listView" class="view">
+      <div class="list-intro">
+        <h1>两个小朋友，一根绳，六个花样</h1>
+        <p>轮流从对方手上把绳子接过来，翻完六步又回到开头，翻到不想停为止。</p>
+        <button class="btn primary" id="startBtn">从第一步开始</button>
       </div>
-      <ul class="hero-stats">
-        <li><strong>18</strong><span>个花样</span></li>
-        <li><strong>3</strong><span>个难度</span></li>
-        <li><strong>2</strong><span>人也能玩</span></li>
-      </ul>
-    </div>
-    <div class="hero-art" aria-hidden="true">
-      <svg viewBox="0 0 600 520" class="hero-svg">
-        <path class="blob blob-a" d="M120 230c-40-90 40-160 130-160 70 0 100-40 170-20 90 25 130 120 90 210-35 80-120 140-220 140S160 320 120 230Z" fill="#ffe3ee"/>
-        <path class="blob blob-b" d="M420 120c50 20 90 90 70 150-20 55-90 60-130 30-40-32-30-120 10-160 20-18 30-28 50-20Z" fill="#e9dcff"/>
-        <g class="hero-string">
-          <path d="M150 290c0-70 66-110 150-110s150 40 150 110" fill="none" stroke="url(#stringGrad)" stroke-width="8" stroke-linecap="round"/>
-          <path d="M150 290c0 70 66 100 150 100s150-30 150-100" fill="none" stroke="url(#stringGrad)" stroke-width="8" stroke-linecap="round"/>
-          <path d="M150 290 L450 290" fill="none" stroke="url(#stringGrad)" stroke-width="6" stroke-linecap="round" opacity=".55"/>
-          <path d="M210 236 L390 344 M390 236 L210 344" fill="none" stroke="url(#stringGrad)" stroke-width="6" stroke-linecap="round" opacity=".8"/>
-        </g>
-        <g class="hero-cat" transform="translate(300 268)">
-          <ellipse cx="0" cy="66" rx="70" ry="46" fill="#fff7f2" stroke="#ffd3e0" stroke-width="3"/>
-          <circle cx="0" cy="8" r="56" fill="#fffaf6" stroke="#ffd3e0" stroke-width="3"/>
-          <path d="M-50-28 -34-74 -8-46Z" fill="#fffaf6" stroke="#ffd3e0" stroke-width="3"/>
-          <path d="M50-28 34-74 8-46Z" fill="#fffaf6" stroke="#ffd3e0" stroke-width="3"/>
-          <ellipse cx="-22" cy="4" rx="6" ry="8" fill="#6b5068"/>
-          <ellipse cx="22" cy="4" rx="6" ry="8" fill="#6b5068"/>
-          <circle cx="-30" cy="22" r="8" fill="#ffc6d8" opacity=".85"/>
-          <circle cx="30" cy="22" r="8" fill="#ffc6d8" opacity=".85"/>
-          <path d="M0 18 l-7 7 h14 Z" fill="#ff8fb2"/>
-          <path d="M0 25 q-7 9 -16 4 M0 25 q7 9 16 4" fill="none" stroke="#b98da6" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M-56 8 h-22 M-56 18 l-22 8 M56 8 h22 M56 18 l22 8" stroke="#d9aec2" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
-        </g>
-        <g class="hero-spark" fill="#ffd166">
-          <path d="M470 250 l6 16 16 6-16 6-6 16-6-16-16-6 16-6Z"/>
-          <path d="M140 190 l4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"/>
-          <path d="M430 410 l4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"/>
-        </g>
-        <g class="hero-heart" fill="#ff9dbc">
-          <path d="M118 372c-12-11-24-2-18 8 4 7 12 10 18 16 6-6 14-9 18-16 6-10-6-19-18-8Z"/>
-          <path d="M486 160c-9-8-18-1-13 6 3 5 9 7 13 12 4-5 10-7 13-12 5-7-4-14-13-6Z"/>
-        </g>
-      </svg>
-      <span class="float-tag tag-1">面条 🍜</span>
-      <span class="float-tag tag-2">蝴蝶 🦋</span>
-      <span class="float-tag tag-3">小星星 ✨</span>
-    </div>
-  </section>
+      <ol class="figure-list" id="figureList"></ol>
+      <p class="list-note">每一步都有 3D 演示：可以拖动旋转，看清楚是谁、用哪只手、从哪里勾住绳子。</p>
+    </section>
 
-  <!-- ───────────── 基础课 ───────────── -->
-  <section class="section" id="learn">
-    <div class="section-head">
-      <p class="eyebrow">STEP 1 · 入门</p>
-      <h2>先跟绳子做个朋友</h2>
-      <p class="section-sub">一根绳子、两只手，就可以开始了。花三分钟看完这一页，后面的花样会轻松很多。</p>
-    </div>
-    <div class="learn-grid">
-      <article class="lesson-card">
-        <div class="lesson-icon" aria-hidden="true">
-          <svg viewBox="0 0 120 96">
-            <path d="M18 52c0-20 19-32 42-32s42 12 42 32-19 30-42 30S18 72 18 52Z" fill="none" stroke="url(#stringGrad)" stroke-width="6" stroke-linecap="round"/>
-            <path d="M82 34c8 2 12 8 12 14M86 30c10 3 16 12 14 22" fill="none" stroke="#ffb3cd" stroke-width="4" stroke-linecap="round"/>
-          </svg>
+    <!-- 详情页 -->
+    <section id="detailView" class="view" hidden>
+      <div class="detail-head">
+        <a class="btn ghost back" href="#/">← 返回列表</a>
+        <div class="detail-title">
+          <h1 id="figName"></h1>
+          <span id="figEn" class="en"></span>
         </div>
-        <h3>选一根听话的绳子</h3>
-        <p>大约 <strong>1 米</strong> 长的棉绳或毛线最合适——差不多是你张开双臂的长度。尼龙绳太滑，容易“逃跑”。</p>
-        <p class="mini-note">💡 把绳子在腰上绕一圈，再多出一个手掌，就是刚刚好的长度。</p>
-      </article>
-      <article class="lesson-card">
-        <div class="lesson-icon" aria-hidden="true">
-          <svg viewBox="0 0 120 96">
-            <path d="M20 60c14-26 34-30 40-8 5 20-18 24-22 8-3-12 14-20 26-10 10 9 6 26-10 28-18 3-28-14-20-28" fill="none" stroke="url(#stringGradWarm)" stroke-width="5.5" stroke-linecap="round"/>
-            <circle cx="92" cy="30" r="4" fill="#ffd166"/>
-          </svg>
-        </div>
-        <h3>打一个牢固的小结</h3>
-        <p>把两头接起来打一个<strong>死结</strong>，剪掉多余的线头。结要小，藏在掌心里，翻的时候才不会勾到。</p>
-        <p class="mini-note">💡 打完拉一拉，确认不会散开再开始。</p>
-      </article>
-      <article class="lesson-card wide">
-        <div class="lesson-icon" aria-hidden="true">
-          <svg viewBox="0 0 160 96">
-            <g fill="none" stroke="url(#stringGrad)" stroke-width="5" stroke-linecap="round">
-              <path d="M12 34c14-16 30-16 44 0M104 34c14-16 30-16 44 0M12 34v34M148 34v34M12 68h136"/>
-              <path d="M46 34c12 24 56 24 68 0"/>
-            </g>
-          </svg>
-        </div>
-        <h3>记住三种起手</h3>
-        <div class="starts">
-          <div class="start-item"><span class="dot"></span><b>基础起手</b><span>双手套进绳圈，手掌撑开，绳子横在掌心。</span></div>
-          <div class="start-item"><span class="dot"></span><b>拇指小指起手</b><span>绳圈只挂在两只手的拇指和小指上，中间留空。</span></div>
-          <div class="start-item"><span class="dot"></span><b>双人起手</b><span>面对面，一人撑绳，另一人用小指或拇指食指来接。</span></div>
-        </div>
-      </article>
-      <article class="lesson-card">
-        <div class="lesson-icon" aria-hidden="true">
-          <svg viewBox="0 0 120 96">
-            <g fill="#ffe0d2" stroke="#f3b8a4" stroke-width="2.5">
-              <ellipse cx="56" cy="66" rx="26" ry="20"/>
-              <rect x="30" y="40" width="9" height="26" rx="4.5"/>
-              <rect x="41" y="30" width="10" height="36" rx="5"/>
-              <rect x="53" y="24" width="10" height="42" rx="5"/>
-              <rect x="65" y="30" width="9" height="36" rx="4.5"/>
-              <rect x="76" y="42" width="9" height="24" rx="4.5"/>
-              <rect x="22" y="54" width="9" height="20" rx="4.5" transform="rotate(-28 26 64)"/>
-            </g>
-            <path d="M56 58c8-6 16-6 22 0" fill="none" stroke="url(#stringGrad)" stroke-width="3.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>认识手指的小名字</h3>
-        <p>拇指、食指、中指、无名指、小指。教程里会一直用到它们，先在心里点一遍名吧。</p>
-        <p class="mini-note">💡 小指虽然小，翻绳的时候却最常派上用场。</p>
-      </article>
-    </div>
-  </section>
+        <span class="counter" id="figCounter"></span>
+      </div>
 
-  <!-- ───────────── 花样图鉴 ───────────── -->
-  <section class="section" id="gallery">
-    <div class="section-head">
-      <p class="eyebrow">STEP 2 · 图鉴</p>
-      <h2>挑一个喜欢的开始</h2>
-      <p class="section-sub">简单 → 中等 → 复杂，一共 18 个花样。点开卡片，可以一步一步跟着翻。</p>
-    </div>
-    <div class="filters" role="group" aria-label="筛选花样">
-      <button class="chip active" type="button" data-filter="all">全部 18</button>
-      <button class="chip" type="button" data-filter="easy">⭐ 简单</button>
-      <button class="chip" type="button" data-filter="mid">⭐⭐ 中等</button>
-      <button class="chip" type="button" data-filter="hard">⭐⭐⭐ 复杂</button>
-      <button class="chip" type="button" data-filter="duo">🤝 双人</button>
-      <button class="chip" type="button" data-filter="done">✅ 已学会</button>
-    </div>
-    <div class="figure-grid" id="figureGrid"></div>
-    <p class="empty-state" id="emptyState" hidden>还没有学会的花样哦，先去翻一个吧～</p>
-  </section>
-
-  <!-- ───────────── 双人接龙 ───────────── -->
-  <section class="section relay-section" id="relay">
-    <div class="relay-layout">
-      <div class="relay-copy">
-        <p class="eyebrow">STEP 3 · 一起玩</p>
-        <h2>双人接龙：<br>一个人翻给另一个人</h2>
-        <p>接龙没有输赢，只有“接下来”。一个人把花样撑开，另一个人接过去翻成新的形状，轮流交替，直到有一方翻不下去为止。</p>
-        <ul class="relay-rules">
-          <li><span>1</span>两个人面对面，距离大约一臂远。</li>
-          <li><span>2</span>接的人只碰绳子，不碰对方的手指。</li>
-          <li><span>3</span>翻的时候慢一点，翻完再松手。</li>
-          <li><span>4</span>翻散了也没关系，从头再来就好啦。</li>
-        </ul>
-        <div class="relay-timer" id="relayTimer">
-          <div class="timer-head"><span class="timer-dot"></span><b>接龙计时器</b><span class="timer-note">看你们能多快接完一轮</span></div>
-          <div class="timer-main"><span id="timerValue">00:00</span><span class="timer-next" id="timerNext">从“面条”开始</span></div>
-          <div class="timer-actions">
-            <button class="btn primary" id="timerStart" type="button">开始接龙</button>
-            <button class="btn ghost" id="timerNextBtn" type="button" hidden>翻好啦，下一手</button>
-            <button class="btn ghost" id="timerReset" type="button" hidden>重来</button>
+      <div class="detail-grid">
+        <div class="stage-col">
+          <div class="stage-wrap">
+            <canvas id="stage3d"></canvas>
+            <div class="stage-hint">拖动旋转 · 滚轮缩放</div>
+            <div class="holder-chip" id="holderChip"><i></i><span></span></div>
           </div>
+
+          <div class="controls">
+            <button class="btn" id="prevBtn">上一步</button>
+            <button class="btn primary" id="playBtn">连续演示</button>
+            <button class="btn" id="nextBtn">下一步</button>
+            <label class="speed"><input type="checkbox" id="speedToggle" /> 慢速</label>
+            <button class="btn ghost small" id="camBtn">复位视角</button>
+          </div>
+
+          <div class="progress" id="progress"></div>
         </div>
-      </div>
-      <div class="relay-chain-wrap">
-        <h3 class="chain-title">接龙顺序</h3>
-        <ol class="relay-chain" id="relayChain"></ol>
-        <p class="chain-foot">卡住了？点任意一手，就能看它的分步教程。</p>
-      </div>
-    </div>
-  </section>
 
-  <!-- ───────────── 小知识 ───────────── -->
-  <section class="section" id="facts">
-    <div class="section-head">
-      <p class="eyebrow">SIDE QUEST · 小知识</p>
-      <h2>绳子背后的小秘密</h2>
-      <p class="section-sub">翻绳不只是一根绳子，它已经陪着全世界的小朋友玩了好几百年。</p>
-    </div>
-    <div class="facts-grid">
-      <article class="fact-card">
-        <span class="fact-emoji" aria-hidden="true">🧵</span>
-        <h3>它有很多名字</h3>
-        <p>在中国，它叫翻花绳，也叫翻线戏、线翻花、挑绷绷、解股。光听名字就知道，各地的小朋友都在玩。</p>
-      </article>
-      <article class="fact-card">
-        <span class="fact-emoji" aria-hidden="true">🏰</span>
-        <h3>十七世纪的英国</h3>
-        <p>“猫的摇篮”这个名字，早在十七世纪的英国图画里就出现了。那时候的小朋友也在翻同样的花样。</p>
-      </article>
-      <article class="fact-card">
-        <span class="fact-emoji" aria-hidden="true">🌍</span>
-        <h3>全世界都在翻</h3>
-        <p>日本的“あやとり”、因纽特人的线绳游戏、非洲的绳子故事……形状不一样，快乐是一样的。</p>
-      </article>
-      <article class="fact-card">
-        <span class="fact-emoji" aria-hidden="true">🤯</span>
-        <h3>大人也会被难住</h3>
-        <p>“手铐逃脱”其实是一道数学谜题，很多大人第一次玩也解不开。你可以去考考爸爸妈妈。</p>
-      </article>
-    </div>
-  </section>
+        <aside class="side-col">
+          <div class="action-card">
+            <div class="action-head">
+              <span id="actionWho"></span>
+              <span class="action-arrow">接手 →</span>
+              <span id="actionNextName"></span>
+            </div>
+            <p id="actionText"></p>
+          </div>
 
-  <!-- ───────────── 小手册 ───────────── -->
-  <section class="section handbook" id="handbook">
-    <div class="handbook-inner">
-      <div>
-        <p class="eyebrow">MY BOOK · 我的小手册</p>
-        <h2>每学会一个，就点亮一朵小花</h2>
-        <p>进度会自动保存在这台设备上。集齐三个简单花样、六个中等花样、四个复杂花样，都能拿到小徽章。</p>
+          <p class="fig-desc" id="figDesc"></p>
+
+          <ol class="step-list" id="stepList"></ol>
+        </aside>
       </div>
-      <div class="handbook-actions">
-        <button class="btn primary big" type="button" id="handbookBtn">打开我的手册 🌷</button>
-        <button class="btn ghost big" type="button" id="drawBtn2">🎲 抽一个花样</button>
-      </div>
-      <div class="badge-row" id="badgeRow" aria-hidden="true"></div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
 
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div>
-      <h3>给爸爸妈妈的话</h3>
-      <p>翻绳能锻炼手指的灵活性、空间想象和耐心。孩子翻不出来的时候，先让她把“形状”看明白，再慢慢找那根要勾的绳子，比直接替她翻更有意思。</p>
-    </div>
-    <div>
-      <h3>参考与延伸</h3>
-      <ul class="footer-links">
-        <li><a href="https://zh.wikipedia.org/wiki/%E7%BF%BB%E8%8A%B1%E7%BB%B3" target="_blank" rel="noopener">维基百科 · 翻花绳</a></li>
-        <li><a href="https://en.wikipedia.org/wiki/Cat%27s_cradle" target="_blank" rel="noopener">Wikipedia · Cat's cradle</a></li>
-        <li><a href="https://www.wikihow.com/Play-Cat%27s-Cradle" target="_blank" rel="noopener">wikiHow · Play Cat's Cradle</a></li>
-        <li><a href="https://en.wikipedia.org/wiki/String_figure" target="_blank" rel="noopener">Wikipedia · String figure</a></li>
-      </ul>
-    </div>
-    <div>
-      <h3>绳子打结了？</h3>
-      <p>别硬拽。找到结的中心，用两根手指把它撑开，再轻轻抖一抖，绳子自己就会松开。翻绳和玩绳子一样，越急越乱。</p>
-    </div>
-  </div>
-  <p class="footer-note">翻绳小花园 · 一根绳子，可以玩很久很久 · 教程由大朋友和小朋友一起整理</p>
-</footer>
+  <footer class="foot">
+    <span>绳子始终是同一根。六步一个循环，接回第一步就能一直翻。</span>
+  </footer>
 
-<!-- ───────────── 教程弹层 ───────────── -->
-<dialog class="tutorial-dialog" id="tutorialDialog" aria-labelledby="tutTitle">
-  <div class="tutorial">
-    <header class="tut-head">
-      <div class="tut-heading">
-        <span class="level-chip" id="tutLevel">⭐ 简单</span>
-        <h2 id="tutTitle">面条</h2>
-        <p class="tut-en" id="tutEn">Spaghetti</p>
-      </div>
-      <div class="tut-meta" id="tutMeta"></div>
-      <button class="close-btn" id="tutClose" type="button" aria-label="关闭教程">✕</button>
-    </header>
-    <div class="tut-body">
-      <div class="tut-stage">
-        <div class="stage-art" id="tutArt"></div>
-        <div class="stage-key" id="tutKey">撑</div>
-        <div class="stage-progress"><span id="tutStepNo">第 1 步 / 共 4 步</span><span id="tutPercent">25%</span></div>
-        <div class="stage-bar"><span id="tutBar"></span></div>
-      </div>
-      <div class="tut-side">
-        <p class="tut-intro" id="tutIntro"></p>
-        <ol class="step-list" id="tutSteps"></ol>
-        <div class="tut-tip" id="tutTip"></div>
-        <div class="tut-fun" id="tutFun"></div>
-      </div>
-    </div>
-    <footer class="tut-foot">
-      <button class="btn ghost" id="prevStep" type="button">← 上一步</button>
-      <div class="dots" id="tutDots" aria-hidden="true"></div>
-      <button class="btn primary" id="nextStep" type="button">下一步 →</button>
-    </footer>
-    <div class="tut-done" id="tutDone" hidden>
-      <div class="done-sticker">
-        <svg viewBox="0 0 120 120" aria-hidden="true">
-          <circle cx="60" cy="60" r="50" fill="#fff3f8" stroke="#ffc2d8" stroke-width="4" stroke-dasharray="6 8"/>
-          <path d="M60 34c-9-9-24-3-22 10 1 10 13 17 22 26 9-9 21-16 22-26 2-13-13-19-22-10Z" fill="#ff8fb2"/>
-          <path d="M35 78c8-6 18-6 25 0" fill="none" stroke="#b06fe0" stroke-width="3.5" stroke-linecap="round"/>
-          <path d="M60 78c8-6 18-6 25 0" fill="none" stroke="#45c4b0" stroke-width="3.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <h3>学会啦！</h3>
-      <p id="doneText">你点亮了一朵新的小花。</p>
-      <div class="done-actions">
-        <button class="btn primary" id="doneClose" type="button">收进小手册</button>
-        <button class="btn ghost" id="doneAgain" type="button">再翻一遍</button>
-      </div>
-    </div>
-  </div>
-</dialog>
-
-<!-- ───────────── 随机抽签 ───────────── -->
-<dialog class="draw-dialog" id="drawDialog" aria-labelledby="drawTitle">
-  <div class="draw-card">
-    <button class="close-btn" id="drawClose" type="button" aria-label="关闭">✕</button>
-    <p class="eyebrow">幸运抽签</p>
-    <h2 id="drawTitle">今天翻点什么？</h2>
-    <div class="draw-slot" id="drawSlot" aria-live="polite">面条</div>
-    <div class="draw-art" id="drawArt"></div>
-    <p class="draw-desc" id="drawDesc"></p>
-    <div class="draw-actions">
-      <button class="btn primary" id="drawGo" type="button">就翻这个 →</button>
-      <button class="btn ghost" id="drawAgain" type="button">再抽一次 🎲</button>
-    </div>
-  </div>
-</dialog>
-
-<!-- ───────────── 我的手册 ───────────── -->
-<dialog class="handbook-dialog" id="handbookDialog" aria-labelledby="hbTitle">
-  <div class="hb-card">
-    <button class="close-btn" id="hbClose" type="button" aria-label="关闭">✕</button>
-    <p class="eyebrow">我的小手册</p>
-    <h2 id="hbTitle">已经点亮的花</h2>
-    <div class="hb-summary" id="hbSummary"></div>
-    <div class="badge-grid" id="badgeGrid"></div>
-    <div class="hb-learned" id="hbLearned"></div>
-  </div>
-</dialog>
-
-<canvas id="confettiCanvas" aria-hidden="true"></canvas>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<noscript><p class="noscript">这个页面需要打开 JavaScript 才能看到花样图鉴和分步教程哦。</p></noscript>
-
-<script src="js/figures.js"></script>
-<script src="js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

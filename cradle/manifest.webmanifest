@@ -1,14 +1,14 @@
 {
-  "name": "翻绳小花园 · 一根绳子的魔法",
-  "short_name": "翻绳小花园",
-  "description": "给小朋友的翻绳花样图鉴与分步教程，从面条、眼镜到蝴蝶、埃菲尔铁塔和双人接龙。",
+  "name": "翻绳接龙 · 两个人一根绳",
+  "short_name": "翻绳接龙",
+  "description": "两个小朋友轮流接绳的翻绳接龙，六个花样循环，3D 演示每一步怎么接。",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#fff5f8",
-  "theme_color": "#fff5f8",
+  "background_color": "#f4f1ea",
+  "theme_color": "#f4f1ea",
   "icons": [
     {
       "src": "icon.svg",
